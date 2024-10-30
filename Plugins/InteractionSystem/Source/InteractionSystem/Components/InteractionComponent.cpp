@@ -5,6 +5,7 @@
 
 #include "Components/ShapeComponent.h"
 #include "GameFramework/Character.h"
+#include "InteractionSystem/Library/InteractionFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -31,9 +32,13 @@ void UInteractionComponent::BeginPlay()
 	OverlapComponent->AttachToComponent(GetOwner()->GetRootComponent(),
 	                                    FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	OverlapComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-	if (UGameplayStatics::GetPlayerCharacter(this, 0)->IsLocallyControlled() && GetNetMode() != NM_DedicatedServer)
+	if (IsValid(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
 	{
-		OverlapComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+		if (UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->IsLocallyControlled()
+			&& GetNetMode() != NM_DedicatedServer)
+		{
+			OverlapComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+		}
 	}
 	OverlapComponent->SetHiddenInGame(false);
 	OverlapComponent->SetWorldScale3D(OverlapComponentScale);
@@ -46,7 +51,10 @@ void UInteractionComponent::OnOverlapBegin_Implementation(UPrimitiveComponent* O
                                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                                                           bool bFromSweep, const FHitResult& SweepResult)
 {
-	//OtherActor->FindComponentByClass<>()
+	
+	// TODO: fix below code
+	//bool bOutSuccess;
+	//UUserWidget* MasterUserWidget = UInteractionFunctionLibrary::GetMasterWidget(OtherActor,MasterComponentClass,bOutSuccess);
 }
 
 void UInteractionComponent::OnOverlapEnd_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

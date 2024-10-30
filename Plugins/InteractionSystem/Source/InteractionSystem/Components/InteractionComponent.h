@@ -33,9 +33,12 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = " ")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Important")
 	TSubclassOf<UShapeComponent> OverlapComponentClass;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = " ")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Important")
 	FVector OverlapComponentScale{10};
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Important")
+	TSubclassOf<UActorComponent> MasterComponentClass;
 };
